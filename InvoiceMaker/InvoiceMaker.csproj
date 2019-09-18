@@ -97,6 +97,7 @@
     <Content Include="Content\my.css" />
     <Content Include="packages.config" />
     <Compile Include="Controllers\WorkDoneController.cs" />
+    <Compile Include="Data\Context.cs" />
     <Compile Include="FormModels\WorkDone\CreateWorkDone.cs" />
     <Compile Include="FormModels\WorkDone\EditWorkDone.cs" />
     <Compile Include="FormModels\WorkType\DeleteWorkType.cs" />

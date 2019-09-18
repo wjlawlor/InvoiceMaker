@@ -1,7 +1,12 @@
-﻿namespace InvoiceMaker.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace InvoiceMaker.Models
 {
     public class Client
     {
+        public Client() { }
+
         public Client(int id, string name, bool isActive)
         {
             Id = id;
@@ -10,8 +15,10 @@
         }
 
         public int Id { get; set; }
-        public string Name { get; private set; }
-        public bool IsActive { get; private set; }
+        [Required, Column("ClientName"), MaxLength(255)]
+        public string Name { get; set; }
+        [Column("IsActivated")]
+        public bool IsActive { get; set; }
 
         public void Activate()
         {
