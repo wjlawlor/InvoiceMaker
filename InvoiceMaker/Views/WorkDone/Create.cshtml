@@ -1,0 +1,28 @@
+﻿@model InvoiceMaker.FormModels.CreateWorkDone
+
+<h1>Create A Work Order</h1>
+
+
+@using (Html.BeginForm("Create", "WorkDone", FormMethod.Post, new { @class = "pure-form pure-form-aligned" }))
+{
+    @Html.AntiForgeryToken()
+
+    <fieldset>
+        <div class="pure-controls">
+            @Html.LabelFor(m => m.ClientId)
+            @Html.DropDownListFor(m => m.ClientId, Model.ClientSelectList, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ClientId, "", new { @class = "pure-form-message-inline" })
+        </div>
+
+        <div class="pure-controls">
+            @Html.LabelFor(m => m.WorkTypeId)
+            @Html.DropDownListFor(m => m.WorkTypeId, Model.WorkTypeSelectList, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.WorkTypeId, "", new { @class = "pure-form-message-inline" })
+        </div>
+
+        <div class="pure-controls">
+            @Html.ActionLink("Cancel", "Index", new { }, new { @class = "pure-button" })
+            <button type="submit" class="pure-button pure-button-primary">Submit</button>
+        </div>
+    </fieldset>
+}

@@ -1,0 +1,19 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>Invoice Maker</title>
+    <link rel="stylesheet" href="~/Content/site.css">
+    <link rel="stylesheet" href="~/Content/my.css">
+</head>
+<body>
+    <div class="pure-menu pure-menu-horizontal">
+        <a href="~/Invoices/Index" class="pure-menu-heading pure-menu-link">Invoiced, LLC.</a>
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a href="~/Clients/Index" class="pure-menu-link">Clients</a></li>
+            <li class="pure-menu-item"><a href="~/WorkType/Index" class="pure-menu-link">Work Types</a></li>
+            <li class="pure-menu-item"><a href="~/WorkDone/Index" class="pure-menu-link">Work Orders</a></li>
+        </ul>
+    </div>
+    @RenderBody()
+</body>
+</html>

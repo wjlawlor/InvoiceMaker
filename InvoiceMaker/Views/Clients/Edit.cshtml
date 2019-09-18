@@ -1,0 +1,27 @@
+﻿@model InvoiceMaker.FormModels.EditClient
+
+<h1>Edit A Client</h1>
+
+@using (Html.BeginForm("Edit", "Clients", new { Id = Model.Id }, FormMethod.Post, new { @class = "pure-form pure-form-aligned" }))
+{
+    @Html.AntiForgeryToken()
+
+    <fieldset>
+        <div class="pure-controls-group">
+            @Html.LabelFor(model => model.Name)
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "pure-form-message-inline" })
+        </div>
+
+        <div class="pure-controls">
+            <label for="IsActivated">
+                @Html.EditorFor(model => model.IsActivated) Is active
+            </label>
+            @Html.ValidationMessageFor(model => model.IsActivated, "", new { @class = "pure-form-message-inline" })
+        </div>
+        <div class="pure-controls">
+            @Html.ActionLink("Cancel", "Index", new { }, new { @class = "pure-button" })
+            <button type="submit" class="pure-button pure-button-primary">Submit</button>
+        </div>
+    </fieldset>
+}
