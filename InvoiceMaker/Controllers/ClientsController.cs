@@ -88,20 +88,11 @@ namespace InvoiceMaker.Controllers
         }
 
         private bool _disposed = false;
-
         protected override void Dispose(bool disposing)
         {
-            if (_disposed == true)
-            {
-                return;
-            }
-            if (disposing)
-            {
-                context.Dispose();
-            }
-
-            _disposed = true;
-
+            if (_disposed == true) { return; }
+            if (disposing) { context.Dispose(); }
+             _disposed = true;
             base.Dispose(disposing);
         }
     }

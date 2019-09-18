@@ -15,9 +15,7 @@ namespace InvoiceMaker.Models
         }
 
         public int Id { get; set; }
-        [Required, Column("ClientName"), MaxLength(255)]
         public string Name { get; set; }
-        [Column("IsActivated")]
         public bool IsActive { get; set; }
 
         public void Activate()

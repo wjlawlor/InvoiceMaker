@@ -1,111 +1,55 @@
-﻿using InvoiceMaker.Models;
+﻿using InvoiceMaker.Data;
+using InvoiceMaker.Models;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace InvoiceMaker.Repositories
 {
     public class WorkTypeRepository
     {
+        private string _connectionString;
         public WorkTypeRepository()
         {
             _connectionString = ConfigurationManager.ConnectionStrings["InvoiceMaker"].ConnectionString;
         }
 
-        private string _connectionString;
+        private Context _context;
+        public WorkTypeRepository(Context context)
+        {
+            _context = context;
+        }
 
         public List<WorkType> GetWorkTypes()
         {
-            List<WorkType> workTypes = new List<WorkType>();
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-
-                string sql = @"
-                        SELECT Id, WorkTypeName, Rate
-                        FROM WorkType
-                        ORDER BY WorkTypeName
-                    ";
-                SqlCommand command = new SqlCommand(sql, connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    int id = reader.GetInt32(0);
-                    string name = reader.GetString(1);
-                    decimal rate = reader.GetDecimal(2);
-                    WorkType workType = new WorkType(id, name, rate);
-                    workTypes.Add(workType);
-                }
-            }
-            return workTypes;
+            return _context.WorkTypes.ToList();
         }
 
         public void Insert(WorkType workType)
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-
-                string sql = @"
-                        INSERT INTO WorkType(WorkTypeName, Rate)
-                        VALUES (@WorkTypeName, @Rate)
-                    ";
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.AddWithValue("@WorkTypeName", workType.Name);
-                command.Parameters.AddWithValue("@Rate", workType.Rate);
-                command.ExecuteNonQuery();
-            }
+            _context.WorkTypes.Add(workType);
+            _context.SaveChanges();
         }
 
         public void Update(WorkType workType)
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-
-                string sql = @"
-                        UPDATE WorkType
-                        SET WorkTypeName = @WorkTypeName,
-                            Rate = @Rate
-                        WHERE Id = @Id
-                    ";
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.AddWithValue("@WorkTypeName", workType.Name);
-                command.Parameters.AddWithValue("@Rate", workType.Rate);
-                command.Parameters.AddWithValue("@Id", workType.Id);
-                command.ExecuteNonQuery();
-            }
+            _context.WorkTypes.Attach(workType);
+            _context.Entry(workType).State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
         public void Delete(WorkType workType)
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-
-                string sql = @"
-                        DELETE FROM WorkType
-                        WHERE Id = @Id
-                    ";
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.AddWithValue("@Id", workType.Id);
-                command.ExecuteNonQuery();
-            }
+            var goner = new WorkType() { Id = workType.Id };
+            _context.Entry(goner).State = EntityState.Deleted;
+            _context.SaveChanges();
         }
 
         public WorkType GetById(int id)
         {
-            List<WorkType> workTypes = GetWorkTypes();
-
-            foreach (var workType in workTypes)
-            {
-                if (id == workType.Id)
-                {
-                    return workType;
-                }
-            }
-            return null;
+            return _context.WorkTypes.SingleOrDefault(c => c.Id == id);
         }
     }
 }
