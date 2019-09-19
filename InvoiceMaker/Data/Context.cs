@@ -32,6 +32,24 @@ namespace InvoiceMaker.Data
                 .Property(p => p.Rate)
                     .HasPrecision(18, 2);
 
+            // WorkDone Properties
+            modelBuilder.Entity<WorkDone>()
+                .HasRequired(wd => wd.Client)
+                .WithMany(c => c.WorkDone)
+                .Map(m => m.MapKey("ClientId"));
+            //modelBuilder.Entity<WorkDone>()
+            //    .HasRequired(wd => wd.Client)
+            //    .WithRequiredDependent()
+            //    .Map(m => m.MapKey("ClientId"));
+
+            modelBuilder.Entity<WorkDone>()
+                .HasRequired(wd => wd.WorkType)
+                .WithMany(wt => wt.WorkDone)
+                .Map(m => m.MapKey("WorkTypeId"));
+            //modelBuilder.Entity<WorkDone>()
+            //    .HasRequired(wd => wd.WorkType)
+            //    .WithRequiredDependent()
+            //    .Map(m => m.MapKey("WorkTypeId"));
 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }

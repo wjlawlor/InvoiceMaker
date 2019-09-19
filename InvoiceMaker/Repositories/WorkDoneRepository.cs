@@ -1,68 +1,34 @@
-﻿using InvoiceMaker.Models;
+﻿using InvoiceMaker.Data;
+using InvoiceMaker.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Data.Entity;
 
 namespace InvoiceMaker.Repositories
 {
     public class WorkDoneRepository
     {
+        private string _connectionString;
         public WorkDoneRepository()
         {
             _connectionString = ConfigurationManager.ConnectionStrings["InvoiceMaker"].ConnectionString;
         }
 
-        private string _connectionString;
+        private Context _context;
+        public WorkDoneRepository(Context context)
+        {
+            _context = context;
+        }
 
         public List<WorkDone> GetWorkDones()
         {
-            List<WorkDone> workDones = new List<WorkDone>();
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-
-                string sql = @"
-                        SELECT WorkDone.Id, WorkDone.ClientId, WorkDone.WorkTypeId, WorkDone.StartedOn,
-                            WorkDone.EndedOn, Client.ClientName, Client.IsActivated, WorkType.WorkTypeName, WorkType.Rate
-                        FROM WorkDone
-                        JOIN Client ON Client.Id = WorkDone.ClientId
-                        JOIN WorkType ON WorkType.Id = WorkDone.WorkTypeId
-                        ORDER BY WorkDone.Id;
-                    ";
-                SqlCommand command = new SqlCommand(sql, connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    int Id = reader.GetInt32(0);
-                    int ClientId = reader.GetInt32(1);
-                    int WorkTypeId = reader.GetInt32(2);
-                    DateTimeOffset StartedOn = reader.GetDateTimeOffset(3);
-                    DateTimeOffset? EndedOn = null;
-                    if (!reader.IsDBNull(4))
-                    {
-                        EndedOn = reader.GetDateTimeOffset(4);
-                    }
-                    string ClientName = reader.GetString(5);
-                    bool IsActivated = reader.GetBoolean(6);
-                    string WorkTypeName = reader.GetString(7);
-                    decimal Rate = reader.GetDecimal(8);
-                    Client client = new Client(ClientId, ClientName, IsActivated);
-                    WorkType workType = new WorkType(WorkTypeId, WorkTypeName, Rate);
-                    if (EndedOn.HasValue)
-                    {
-                        WorkDone workDone = new WorkDone(Id, client, workType, StartedOn, EndedOn.Value);
-                        workDones.Add(workDone);
-                    }
-                    else
-                    {
-                        WorkDone workDone = new WorkDone(Id, client, workType, StartedOn);
-                        workDones.Add(workDone);
-                    }
-                }
-            }
-            return workDones;
+            return _context.WorkDones
+                .Include(wd => wd.Client)
+                .Include(wd => wd.WorkType)
+                .ToList();
         }
 
         public void Insert(WorkDone workDone)
@@ -76,8 +42,8 @@ namespace InvoiceMaker.Repositories
                         VALUES (@ClientId, @WorkTypeId, @StartedOn)
                     ";
                 SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.AddWithValue("@ClientId", workDone.ClientId);
-                command.Parameters.AddWithValue("@WorkTypeId", workDone.WorkTypeId);
+                command.Parameters.AddWithValue("@ClientId", workDone.Client.Id);
+                command.Parameters.AddWithValue("@WorkTypeId", workDone.WorkType.Id);
                 command.Parameters.AddWithValue("@StartedOn", workDone.StartedOn);
                 command.ExecuteNonQuery();
             }
@@ -98,8 +64,8 @@ namespace InvoiceMaker.Repositories
                         WHERE Id = @Id
                     ";
                 SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.AddWithValue("@ClientId", workDone.ClientId);
-                command.Parameters.AddWithValue("@WorkTypeId", workDone.WorkTypeId);
+                command.Parameters.AddWithValue("@ClientId", workDone.Client.Id);
+                command.Parameters.AddWithValue("@WorkTypeId", workDone.WorkType.Id);
                 command.Parameters.AddWithValue("@StartedOn", workDone.StartedOn);
                 if (workDone.EndedOn == null) { command.Parameters.AddWithValue("@EndedOn", DBNull.Value); }
                     else { command.Parameters.AddWithValue("@EndedOn", workDone.EndedOn); }

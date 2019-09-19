@@ -5,15 +5,25 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using System;
 using System.Data.SqlClient;
+using InvoiceMaker.Data;
+using System.Diagnostics;
 
 namespace InvoiceMaker.Controllers
 {
     public class WorkDoneController : Controller
     {
+        private Context context;
+
+        public WorkDoneController()
+        {
+            context = new Context();
+            context.Database.Log = (message) => Debug.WriteLine(message);
+        }
+
         public ActionResult Index()
         {
             // Populate table from List of items
-            WorkDoneRepository repo = new WorkDoneRepository();
+            WorkDoneRepository repo = new WorkDoneRepository(context);
             List<WorkDone> workDones = repo.GetWorkDones();
             return View("Index", workDones);
         }
@@ -75,8 +85,8 @@ namespace InvoiceMaker.Controllers
             // Bind the View Model
             EditWorkDone model = new EditWorkDone(clients, workTypes);
             model.Id = id.Value;
-            model.ClientId = workDone.ClientId;
-            model.WorkTypeId = workDone.WorkTypeId;
+            model.ClientId = workDone.Client.Id;
+            model.WorkTypeId = workDone.WorkType.Id;
             model.StartedOn = workDone.StartedOn;
             model.EndedOn = workDone.EndedOn;
 

@@ -1,11 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InvoiceMaker.Models
 {
     public class Client
     {
-        public Client() { }
+        public Client()
+        {
+            WorkDone = new List<Models.WorkDone>();
+        }
 
         public Client(int id, string name, bool isActive)
         {
@@ -17,6 +21,8 @@ namespace InvoiceMaker.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }
+
+        public List<WorkDone> WorkDone { get; set; }
 
         public void Activate()
         {
