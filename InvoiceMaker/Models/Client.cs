@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InvoiceMaker.Models
 {
@@ -8,7 +6,7 @@ namespace InvoiceMaker.Models
     {
         public Client()
         {
-            WorkDone = new List<Models.WorkDone>();
+            WorkDone = new List<WorkDone>();
         }
 
         public Client(int id, string name, bool isActive)

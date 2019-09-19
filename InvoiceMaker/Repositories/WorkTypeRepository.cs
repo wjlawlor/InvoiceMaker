@@ -1,21 +1,13 @@
 ﻿using InvoiceMaker.Data;
 using InvoiceMaker.Models;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Entity;
-using System.Data.SqlClient;
 using System.Linq;
 
 namespace InvoiceMaker.Repositories
 {
     public class WorkTypeRepository
     {
-        private string _connectionString;
-        public WorkTypeRepository()
-        {
-            _connectionString = ConfigurationManager.ConnectionStrings["InvoiceMaker"].ConnectionString;
-        }
-
         private Context _context;
         public WorkTypeRepository(Context context)
         {
