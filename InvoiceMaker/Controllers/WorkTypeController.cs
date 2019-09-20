@@ -1,4 +1,5 @@
-﻿using InvoiceMaker.FormModels;
+﻿using InvoiceMaker.Data;
+using InvoiceMaker.FormModels;
 using InvoiceMaker.Models;
 using InvoiceMaker.Repositories;
 using System.Collections.Generic;
@@ -9,10 +10,18 @@ namespace InvoiceMaker.Controllers
 {
     public class WorkTypeController : Controller
     {
+        private Context context;
+
+        public WorkTypeController()
+        {
+            context = new Context();
+        }
+
         public ActionResult Index()
         {
-            WorkTypeRepository repo = new WorkTypeRepository();
+            WorkTypeRepository repo = new WorkTypeRepository(context);
             List<WorkType> workTypes = repo.GetWorkTypes();
+
             return View("Index", workTypes);
         }
 
@@ -25,7 +34,7 @@ namespace InvoiceMaker.Controllers
         [HttpPost]
         public ActionResult Create(CreateWorkType workType)
         {
-            WorkTypeRepository repo = new WorkTypeRepository();
+            WorkTypeRepository repo = new WorkTypeRepository(context);
             try
             {
                 WorkType newWorkType = new WorkType(0, workType.Name, workType.Rate);
@@ -47,7 +56,7 @@ namespace InvoiceMaker.Controllers
         {
             if (id == null) { return RedirectToAction("Index"); }
 
-            WorkTypeRepository repo = new WorkTypeRepository();
+            WorkTypeRepository repo = new WorkTypeRepository(context);
             WorkType workType = repo.GetById(id.Value);
 
             if (workType == null) { return RedirectToAction("Index"); }
@@ -63,7 +72,7 @@ namespace InvoiceMaker.Controllers
         [HttpPost]
         public ActionResult Edit(int id, EditWorkType workType)
         {
-            WorkTypeRepository repo = new WorkTypeRepository();
+            WorkTypeRepository repo = new WorkTypeRepository(context);
             try
             {
                 WorkType newWorkType = new WorkType(id, workType.Name, workType.Rate);
@@ -84,7 +93,7 @@ namespace InvoiceMaker.Controllers
         {
             if (id == null) { return RedirectToAction("Index"); }
 
-            WorkTypeRepository repo = new WorkTypeRepository();
+            WorkTypeRepository repo = new WorkTypeRepository(context);
             WorkType workType = repo.GetById(id.Value);
 
             if (workType == null) { return RedirectToAction("Index"); }
@@ -99,12 +108,21 @@ namespace InvoiceMaker.Controllers
         [HttpPost]
         public ActionResult Delete(int id, DeleteWorkType workType)
         {
-            WorkTypeRepository repo = new WorkTypeRepository();
+            WorkTypeRepository repo = new WorkTypeRepository(context);
 
             WorkType newWorkType = new WorkType(id, workType.Name,0);
             repo.Delete(newWorkType);
 
             return RedirectToAction("Index");           
+        }
+
+        private bool _disposed = false;
+        protected override void Dispose(bool disposing)
+        {
+            if (_disposed == true) { return; }
+            if (disposing) { context.Dispose(); }
+            _disposed = true;
+            base.Dispose(disposing);
         }
     }
 }

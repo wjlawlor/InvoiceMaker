@@ -1,14 +1,17 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InvoiceMaker.Models
 {
     public class WorkDone
     {
+        public WorkDone() { }
+
         public WorkDone(int id, Client client, WorkType workType)
         {
             Id = id;
-            _client = client;
-            _type = workType;
+            Client = client;
+            WorkType = workType;
             StartedOn = DateTimeOffset.Now;
         }
         public WorkDone(int id, Client client, WorkType workType, DateTimeOffset startedOn) 
@@ -23,13 +26,18 @@ namespace InvoiceMaker.Models
         }
 
         public int Id { get; set; }
-        public decimal Rate { get { return _type.Rate; } }
-        public int ClientId { get { return _client.Id; } }
-        public string ClientName { get { return _client.Name; } }
-        public int WorkTypeId { get { return _type.Id; } }
-        public string WorkTypeName { get { return _type.Name; } }
+        public decimal Rate { get { return WorkType.Rate; } }
+        public int ClientId { get { return Client.Id; } }
+        public string ClientName { get { return Client.Name; } }
+        public int WorkTypeId { get { return WorkType.Id; } }
+        public string WorkTypeName { get { return WorkType.Name; } }
         public DateTimeOffset StartedOn { get; private set; }
         public DateTimeOffset? EndedOn { get; private set; }
+
+        //public int ClientId { get; set; }
+        public Client Client { get; set; }
+        //public int WorkTypeId { get; set; }
+        public WorkType WorkType { get; set; }
 
         public void Finished(DateTimeOffset endedOn)
         {
@@ -44,10 +52,10 @@ namespace InvoiceMaker.Models
             {
                 return null;
             }
-            return _type.Rate * (decimal)(EndedOn.Value - StartedOn).TotalHours;
+            return WorkType.Rate * (decimal)(EndedOn.Value - StartedOn).TotalHours;
         }
 
-        private Client _client;
-        private WorkType _type;
+        //private Client _client;
+        //private WorkType _type;
     }
 }

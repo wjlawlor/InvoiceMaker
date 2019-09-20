@@ -1,7 +1,14 @@
-﻿namespace InvoiceMaker.Models
+﻿using System.Collections.Generic;
+
+namespace InvoiceMaker.Models
 {
     public class Client
     {
+        public Client()
+        {
+            WorkDone = new List<WorkDone>();
+        }
+
         public Client(int id, string name, bool isActive)
         {
             Id = id;
@@ -10,8 +17,10 @@
         }
 
         public int Id { get; set; }
-        public string Name { get; private set; }
-        public bool IsActive { get; private set; }
+        public string Name { get; set; }
+        public bool IsActive { get; set; }
+
+        public List<WorkDone> WorkDone { get; set; }
 
         public void Activate()
         {

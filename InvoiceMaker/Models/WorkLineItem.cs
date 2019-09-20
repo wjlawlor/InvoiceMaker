@@ -5,7 +5,7 @@ using System.Web;
 
 namespace InvoiceMaker.Models
 {
-    public class WorkLineItem :ILineItem
+    public class WorkLineItem : ILineItem
     {
         public WorkLineItem(WorkDone workDone)
         {
@@ -28,7 +28,7 @@ namespace InvoiceMaker.Models
         {
             get
             {
-                return _workDone.WorkTypeName;
+                return _workDone.WorkType.Name;
             }
         }
         public DateTimeOffset When
