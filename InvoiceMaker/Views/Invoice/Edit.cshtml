@@ -3,7 +3,7 @@
 <h1>Edit An Invoice</h1>
 
 <p>
-    @Html.ActionLink("Add A Work Done", "Add", "WorkDone", new { }, new { @class = "button-secondary pure-button" })
+    @Html.ActionLink("Add A Work Done", "AddWorkDone", new { Id = Model.Id }, new { @class = "button-secondary pure-button" })
 </p>
 
 @using (Html.BeginForm("Edit", "Invoice", FormMethod.Post, new { @class = "pure-form pure-form-stacked" }))

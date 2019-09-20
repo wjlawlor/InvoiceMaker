@@ -1,19 +1,21 @@
-﻿<h2>Add A Work Done</h2>
+﻿@model InvoiceMaker.FormModels.Invoice.AddWorkDoneInvoice
 
-@using (Html.BeginForm("Create", "Invoice", FormMethod.Post, new { @class = "pure-form pure-form-stacked" }))
+<h1>Add Work Done to Invoice</h1>
+
+@using (Html.BeginForm("AddWorkDone", "Invoice", new { Id = Model.Id }, FormMethod.Post, new { @class = "pure-form pure-form-stacked" }))
 {
     @Html.AntiForgeryToken()
 
     <fieldset>
         <div class="pure-controls">
-            @Html.LabelFor(m => m.ClientId)
-            @Html.DropDownListFor(m => m.ClientId, Model.ClientSelectList, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.ClientId, "", new { @class = "pure-form-message-inline" })
+            @Html.LabelFor(m => m.WorkDoneId)
+            @Html.DropDownListFor(m => m.WorkDoneId, Model.WorkDoneSelectList, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.WorkDoneId, "", new { @class = "pure-form-message-inline" })
         </div>
 
-        <div class="pure-controls">
-            @Html.ActionLink("Cancel", "Index", new { }, new { @class = "button-error pure-button" })
-            <button type="submit" class="button-success pure-button">Submit</button>
+        <div>
+            @Html.ActionLink("Cancel", "Edit", new { }, new { @class = "button-neutral pure-button" })
+            <button type="submit" class="button-success pure-button">Add</button>
         </div>
     </fieldset>
 }

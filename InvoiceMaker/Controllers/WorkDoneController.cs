@@ -130,5 +130,14 @@ namespace InvoiceMaker.Controllers
             // If it's not, show page again.
             return View("Edit", editWorkDone);
         }
+
+        private bool _disposed = false;
+        protected override void Dispose(bool disposing)
+        {
+            if (_disposed == true) { return; }
+            if (disposing) { context.Dispose(); }
+            _disposed = true;
+            base.Dispose(disposing);
+        }
     }
 }

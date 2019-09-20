@@ -103,6 +103,7 @@
     <Compile Include="Controllers\WorkDoneController.cs" />
     <Compile Include="Data\Context.cs" />
     <Compile Include="Data\DatabaseInitializer.cs" />
+    <Compile Include="FormModels\Invoice\AddWorkDoneInvoice.cs" />
     <Compile Include="FormModels\Invoice\CreateInvoice.cs" />
     <Compile Include="FormModels\Invoice\EditInvoice.cs" />
     <Compile Include="FormModels\WorkDone\CreateWorkDone.cs" />

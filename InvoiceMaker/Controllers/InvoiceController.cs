@@ -76,11 +76,11 @@ namespace InvoiceMaker.Controllers
             List<Client> clients = clientRepo.GetClients();
 
             EditInvoice editInvoice = new EditInvoice(clients);
-            editInvoice.Id = id.Value;
-            editInvoice.ClientId = invoice.Client.Id;
-            editInvoice.InvoiceNumber = invoice.InvoiceNumber;
-            editInvoice.OpenedOn = invoice.OpenedOn;
-            editInvoice.Status = invoice.Status;
+                editInvoice.Id = id.Value;
+                editInvoice.ClientId = invoice.Client.Id;
+                editInvoice.InvoiceNumber = invoice.InvoiceNumber;
+                editInvoice.OpenedOn = invoice.OpenedOn;
+                editInvoice.Status = invoice.Status;
 
             return View("Edit", editInvoice);
         }
@@ -115,6 +115,43 @@ namespace InvoiceMaker.Controllers
 
             // If it's not, show page again.
             return View("Edit", editInvoice);
+        }
+
+        public ActionResult AddWorkDone(int? id)
+        {
+            InvoiceRepository invoiceRepo = new InvoiceRepository(context);
+            WorkDoneRepository workDoneRepo = new WorkDoneRepository(context);
+
+            // Kick them out if they don't offer an ID.
+            if (id == null) { return RedirectToAction("Index"); }
+
+            Invoice invoice = invoiceRepo.GetById(id.Value);
+
+            // Kick them out if the try a non-existant ID.
+            if (invoice == null) { return RedirectToAction("Index"); }
+
+            // Populate DropDownList
+            List<WorkDone> workDones = workDoneRepo.GetWorkDones();
+
+            AddWorkDoneInvoice addWorkDoneInvoice = new AddWorkDoneInvoice(workDones);
+
+            return View("AddWorkDone", addWorkDoneInvoice); 
+        }
+
+
+        [HttpPost]
+        public ActionResult AddWorkDone(int id, AddWorkDoneInvoice invoice)
+        {
+            return RedirectToAction("Edit", id);
+        }
+
+        private bool _disposed = false;
+        protected override void Dispose(bool disposing)
+        {
+            if (_disposed == true) { return; }
+            if (disposing) { context.Dispose(); }
+            _disposed = true;
+            base.Dispose(disposing);
         }
     }
 }
