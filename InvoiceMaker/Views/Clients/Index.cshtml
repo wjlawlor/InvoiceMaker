@@ -3,7 +3,7 @@
 <h1>Clients</h1>
 
 <p>
-    @Html.ActionLink("Add A Client", "Create", new { }, new { @class = "pure-button pure-button-primary" })
+    @Html.ActionLink("Add A Client", "Create", new { }, new { @class = "button-secondary pure-button" })
 </p>
 
 <table class="pure-table pure-table-striped">
@@ -33,4 +33,4 @@
     </tbody>
 </table>
 
-<p>@Html.ActionLink("Home", "Index", "Invoices")</p>
+<p>@Html.ActionLink("Home", "Index", "Home", null, new { @class = "button-neutral pure-button" })</p>

@@ -1,0 +1,43 @@
+﻿@model InvoiceMaker.FormModels.Invoice.EditInvoice
+
+<h1>Edit An Invoice</h1>
+
+<p>
+    @Html.ActionLink("Add A Work Done", "Add", "WorkDone", new { }, new { @class = "button-secondary pure-button" })
+</p>
+
+@using (Html.BeginForm("Edit", "Invoice", FormMethod.Post, new { @class = "pure-form pure-form-stacked" }))
+{
+    @Html.AntiForgeryToken()
+
+    <fieldset>
+        <div class="pure-controls">
+            @Html.LabelFor(m => m.ClientId)
+            @Html.DropDownListFor(m => m.ClientId, Model.ClientSelectList, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ClientId, "", new { @class = "pure-form-message-inline" })
+        </div>
+
+        <div class="pure-controls">
+            @Html.LabelFor(model => model.InvoiceNumber)
+            @Html.EditorFor(model => model.InvoiceNumber)
+            @Html.ValidationMessageFor(model => model.InvoiceNumber, "", new { @class = "pure-form-message-inline" })
+        </div>
+
+        <div class="pure-controls">
+            @Html.LabelFor(model => model.OpenedOn)
+            @Html.EditorFor(model => model.OpenedOn)
+            @Html.ValidationMessageFor(model => model.OpenedOn, "", new { @class = "pure-form-message-inline" })
+        </div>
+
+        <div class="pure-controls">
+            @Html.LabelFor(m => m.Status)
+            @Html.EnumDropDownListFor(m => m.Status, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "pure-form-message-inline" })
+        </div>
+
+        <div class="pure-controls">
+            @Html.ActionLink("Cancel", "Index", new { }, new { @class = "button-error pure-button" })
+            <button type="submit" class="button-success pure-button">Submit</button>
+        </div>
+    </fieldset>
+}

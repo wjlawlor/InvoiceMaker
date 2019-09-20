@@ -19,8 +19,8 @@ namespace InvoiceMaker.Models
         }
 
         public int Id { get; set; }
-        public string Name { get; private set; }
-        public decimal Rate { get; private set; }
+        public string Name { get; set; }
+        public decimal Rate { get; set; }
 
         public List<WorkDone> WorkDone { get; set; }
     }

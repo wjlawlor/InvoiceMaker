@@ -2,7 +2,7 @@
 
 <h1>Edit A Client</h1>
 
-@using (Html.BeginForm("Edit", "Clients", new { Id = Model.Id }, FormMethod.Post, new { @class = "pure-form pure-form-aligned" }))
+@using (Html.BeginForm("Edit", "Clients", new { Id = Model.Id }, FormMethod.Post, new { @class = "pure-form pure-form-stacked" }))
 {
     @Html.AntiForgeryToken()
 
@@ -20,8 +20,8 @@
             @Html.ValidationMessageFor(model => model.IsActivated, "", new { @class = "pure-form-message-inline" })
         </div>
         <div class="pure-controls">
-            @Html.ActionLink("Cancel", "Index", new { }, new { @class = "pure-button" })
-            <button type="submit" class="pure-button pure-button-primary">Submit</button>
+            @Html.ActionLink("Cancel", "Index", new { }, new { @class = "button-error pure-button" })
+            <button type="submit" class="button-success pure-button">Submit</button>
         </div>
     </fieldset>
 }

@@ -1,15 +1,26 @@
 ﻿.m-4{
-    margin: 20px !important;
+    margin: 20px;
+}
+
+/* Hyperlink Stuff */
+a{
+    text-decoration: none;
+    color: darkcyan;
 }
 
 /* Button Stuff */
 .button-success,
 .button-error,
 .button-warning,
-.button-secondary {
+.button-secondary,
+.button-neutral {
     color: white;
     border-radius: 4px;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.button-neutral{
+    color: black;
 }
 
 .button-success {
