@@ -31,13 +31,18 @@ namespace InvoiceMaker.Models
         public string ClientName { get { return Client.Name; } }
         public int WorkTypeId { get { return WorkType.Id; } }
         public string WorkTypeName { get { return WorkType.Name; } }
-        public DateTimeOffset StartedOn { get; private set; }
-        public DateTimeOffset? EndedOn { get; private set; }
+        public DateTimeOffset StartedOn { get; set; }
+        public DateTimeOffset? EndedOn { get; set; }
 
         //public int ClientId { get; set; }
         public Client Client { get; set; }
         //public int WorkTypeId { get; set; }
         public WorkType WorkType { get; set; }
+        public int? InvoiceId { get; set; }
+        public Invoice Invoice { get; set; }
+
+        public string Description { get { return $"{StartedOn.ToString("MM/dd/yyyy")} - {WorkTypeName}"; } }
+
 
         public void Finished(DateTimeOffset endedOn)
         {
@@ -54,8 +59,5 @@ namespace InvoiceMaker.Models
             }
             return WorkType.Rate * (decimal)(EndedOn.Value - StartedOn).TotalHours;
         }
-
-        //private Client _client;
-        //private WorkType _type;
     }
 }

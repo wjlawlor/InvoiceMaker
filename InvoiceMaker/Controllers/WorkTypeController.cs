@@ -34,19 +34,15 @@ namespace InvoiceMaker.Controllers
         [HttpPost]
         public ActionResult Create(CreateWorkType workType)
         {
-            WorkTypeRepository repo = new WorkTypeRepository(context);
-            try
+
+            WorkTypeRepository workTypeRepo = new WorkTypeRepository(context);
+
+            WorkType newWorkType = new WorkType(0, workType.Name, workType.Rate);
+
+            if (ModelState.IsValid)
             {
-                WorkType newWorkType = new WorkType(0, workType.Name, workType.Rate);
-                repo.Insert(newWorkType);
+                workTypeRepo.Insert(newWorkType);
                 return RedirectToAction("Index");
-            }
-            catch (SqlException se)
-            {
-                if (se.Number == 2627)
-                {
-                    ModelState.AddModelError("Name", "That name is already taken.");
-                }
             }
 
             return View("Create", workType);

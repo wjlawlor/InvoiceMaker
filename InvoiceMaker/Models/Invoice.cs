@@ -5,22 +5,40 @@ namespace InvoiceMaker.Models
 {
     public class Invoice
     {
-        public Invoice(string invoiceNumber)
+        public Invoice() { }
+
+        public Invoice(int id, string invoiceNumber, Client client)
         {
+            Id = id;
             InvoiceNumber = invoiceNumber;
+            Client = client;
+            OpenedOn = DateTime.Now;
             LineItems = new List<ILineItem>();
             Status = InvoiceStatus.Open;
         }
 
-        public Invoice(string invoiceNumber, InvoiceStatus status)
-          : this(invoiceNumber)
+        public Invoice(int id, string invoiceNumber, Client client, InvoiceStatus status)
+          : this(id, invoiceNumber, client)
         {
             Status = status;
         }
 
-        public InvoiceStatus Status { get; private set; }
-        public string InvoiceNumber { get; private set; }
-        public List<ILineItem> LineItems { get; private set; }
+        public Invoice(int id, string invoiceNumber, Client client, InvoiceStatus status, DateTime openedOn)
+            : this(id, invoiceNumber, client, status)
+        {
+            OpenedOn = openedOn;
+        }
+
+        public int Id { get; set; }
+        public string InvoiceNumber { get; set; }
+        public InvoiceStatus Status { get; set; }
+        public int ClientId { get; set; }
+        public Client Client { get; set; }
+        public DateTime OpenedOn { get; set; }
+
+        public List<ILineItem> LineItems { get; set; }
+        public List<WorkDone> WorkDones { get; set; }
+        //public List<FeeLineItem> FeeLineItems { get; set; }
 
         public void AddWorkLineItem(WorkDone workDone)
         {

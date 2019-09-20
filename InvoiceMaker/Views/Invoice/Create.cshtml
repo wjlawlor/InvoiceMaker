@@ -1,9 +1,9 @@
-﻿@model InvoiceMaker.FormModels.CreateWorkDone
+﻿@model InvoiceMaker.FormModels.Invoice.CreateInvoice
 
-<h1>Create A Work Order</h1>
+<h1>Create An Invoice</h1>
 
 
-@using (Html.BeginForm("Create", "WorkDone", FormMethod.Post, new { @class = "pure-form pure-form-stacked" }))
+@using (Html.BeginForm("Create", "Invoice", FormMethod.Post, new { @class = "pure-form pure-form-stacked" }))
 {
     @Html.AntiForgeryToken()
 
@@ -15,9 +15,9 @@
         </div>
 
         <div class="pure-controls">
-            @Html.LabelFor(m => m.WorkTypeId)
-            @Html.DropDownListFor(m => m.WorkTypeId, Model.WorkTypeSelectList, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.WorkTypeId, "", new { @class = "pure-form-message-inline" })
+            @Html.LabelFor(model => model.InvoiceNumber)
+            @Html.EditorFor(model => model.InvoiceNumber)
+            @Html.ValidationMessageFor(model => model.InvoiceNumber, "", new { @class = "pure-form-message-inline" })
         </div>
 
         <div class="pure-controls">

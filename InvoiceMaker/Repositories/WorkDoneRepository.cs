@@ -37,7 +37,10 @@ namespace InvoiceMaker.Repositories
 
         public WorkDone GetById(int id)
         {
-            return _context.WorkDones.SingleOrDefault(wd => wd.Id == id);
+            return _context.WorkDones
+                .Include(wd => wd.Client)
+                .Include(wd => wd.WorkType)
+                .SingleOrDefault(wd => wd.Id == id);
         }
     }
 }

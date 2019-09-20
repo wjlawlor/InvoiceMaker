@@ -3,7 +3,7 @@
 <h1>Work Types</h1>
 
 <p>
-    @Html.ActionLink("Add A Work Type", "Create", new { }, new { @class = "pure-button pure-button-primary" })
+    @Html.ActionLink("Add A Work Type", "Create", new { }, new { @class = "button-secondary pure-button" })
 </p>
 
 
@@ -29,4 +29,4 @@
     </tbody>
 </table>
 
-<p>@Html.ActionLink("Home", "Index", "Invoices")</p>
+<p>@Html.ActionLink("Home", "Index", "Home", null, new { @class = "button-neutral pure-button" })</p>

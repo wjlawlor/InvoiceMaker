@@ -1,0 +1,36 @@
+﻿@model List<InvoiceMaker.Models.Invoice>
+
+<h1>Invoices</h1>
+
+<p>
+    @Html.ActionLink("Add An Invoice", "Create", new { }, new { @class = "button-secondary pure-button" })
+</p>
+
+<table class="pure-table pure-table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Client</th>
+            <th>Active</th>
+            <th>Date Opened</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var invoice in Model)
+        {
+            <tr>
+                <td>@invoice.InvoiceNumber</td>
+                <td>@invoice.Client.Name</td>
+                <td>@invoice.Status</td>
+                <td>@invoice.OpenedOn.ToString("d")</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { Id = invoice.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>@Html.ActionLink("Home", "Index", "Home", null, new { @class = "button-neutral pure-button" })</p>
+

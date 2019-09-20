@@ -83,51 +83,61 @@ namespace InvoiceMaker.Controllers
             List<WorkType> workTypes = workTypeRepo.GetWorkTypes();
 
             // Bind the View Model
-            EditWorkDone model = new EditWorkDone(clients, workTypes);
-            model.Id = id.Value;
-            model.ClientId = workDone.Client.Id;
-            model.WorkTypeId = workDone.WorkType.Id;
-            model.StartedOn = workDone.StartedOn;
-            model.EndedOn = workDone.EndedOn;
+            EditWorkDone editWorkDone = new EditWorkDone(clients, workTypes);
+                editWorkDone.Id = id.Value;
+                editWorkDone.ClientId = workDone.Client.Id;
+                editWorkDone.WorkTypeId = workDone.WorkType.Id;
+                editWorkDone.StartedOn = workDone.StartedOn;
+                editWorkDone.EndedOn = workDone.EndedOn;
 
-            return View("Edit", model);
+            return View("Edit", editWorkDone);
         }
 
         [HttpPost]
         public ActionResult Edit(int id, EditWorkDone workDone)
         {
             WorkDoneRepository workDoneRepo = new WorkDoneRepository(context);
-
-            // Repopulate DropDown Lists
-            ClientRepository clientsRepo = new ClientRepository(context);
-            List<Client> clients = clientsRepo.GetClients();
-            WorkTypeRepository workTypesRepo = new WorkTypeRepository(context);
-            List<WorkType> workTypes = workTypesRepo.GetWorkTypes();
-
-            // Populate DropDown values
             ClientRepository clientRepo = new ClientRepository(context);
-            Client client = clientRepo.GetById(workDone.ClientId);
             WorkTypeRepository workTypeRepo = new WorkTypeRepository(context);
-            WorkType workType = workTypeRepo.GetById(workDone.WorkTypeId);
 
-            WorkDone newWorkDone = new WorkDone(id, client, workType, workDone.StartedOn, workDone.EndedOn);
-
-            // Populate View Model
-            EditWorkDone editWorkDone = new EditWorkDone(clients, workTypes);
-            editWorkDone.ClientId = workDone.ClientId;
-            editWorkDone.WorkTypeId = workDone.WorkTypeId;
-            editWorkDone.StartedOn = workDone.StartedOn;
-            editWorkDone.EndedOn = workDone.EndedOn;
-
-            // If it's good, submit and go back.
             if (ModelState.IsValid)
             {
+                // Populate DropDown values
+                Client client = clientRepo.GetById(workDone.ClientId);  
+                WorkType workType = workTypeRepo.GetById(workDone.WorkTypeId);
+                WorkDone newWorkDone = workDoneRepo.GetById(id);
+                    newWorkDone.Client = client;
+                    newWorkDone.WorkType = workType;
+                    newWorkDone.StartedOn = workDone.StartedOn;
+                    newWorkDone.EndedOn = workDone.EndedOn;
+
+                // If it's good, submit and go back.
                 workDoneRepo.Update(newWorkDone);
                 return RedirectToAction("Index");
             }
 
+            // Repopulate DropDown Lists
+            List<Client> clients = clientRepo.GetClients();
+            List<WorkType> workTypes = workTypeRepo.GetWorkTypes();
+
+            // Populate View Model
+            EditWorkDone editWorkDone = new EditWorkDone(clients, workTypes);
+                editWorkDone.ClientId = workDone.ClientId;
+                editWorkDone.WorkTypeId = workDone.WorkTypeId;
+                editWorkDone.StartedOn = workDone.StartedOn;
+                editWorkDone.EndedOn = workDone.EndedOn;
+
             // If it's not, show page again.
             return View("Edit", editWorkDone);
+        }
+
+        private bool _disposed = false;
+        protected override void Dispose(bool disposing)
+        {
+            if (_disposed == true) { return; }
+            if (disposing) { context.Dispose(); }
+            _disposed = true;
+            base.Dispose(disposing);
         }
     }
 }

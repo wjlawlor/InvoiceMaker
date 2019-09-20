@@ -9,6 +9,7 @@ namespace InvoiceMaker.Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<WorkType> WorkTypes { get; set; }
         public DbSet<WorkDone> WorkDones { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -37,19 +38,10 @@ namespace InvoiceMaker.Data
                 .HasRequired(wd => wd.Client)
                 .WithMany(c => c.WorkDone)
                 .Map(m => m.MapKey("ClientId"));
-            //modelBuilder.Entity<WorkDone>()
-            //    .HasRequired(wd => wd.Client)
-            //    .WithRequiredDependent()
-            //    .Map(m => m.MapKey("ClientId"));
-
             modelBuilder.Entity<WorkDone>()
                 .HasRequired(wd => wd.WorkType)
                 .WithMany(wt => wt.WorkDone)
                 .Map(m => m.MapKey("WorkTypeId"));
-            //modelBuilder.Entity<WorkDone>()
-            //    .HasRequired(wd => wd.WorkType)
-            //    .WithRequiredDependent()
-            //    .Map(m => m.MapKey("WorkTypeId"));
 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
