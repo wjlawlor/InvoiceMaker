@@ -34,7 +34,7 @@ namespace InvoiceMaker.FormModels.Invoice
         public SelectList WorkDoneSelectList { get; set; }
         public void SetClientList(List<WorkDone> workDones)
         {
-            WorkDoneSelectList = new SelectList(workDones, "Id", "Id");
+            WorkDoneSelectList = new SelectList(workDones, "Id", "Description");
         }
     }
 }

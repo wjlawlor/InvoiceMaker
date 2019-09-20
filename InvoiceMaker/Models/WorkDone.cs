@@ -41,6 +41,8 @@ namespace InvoiceMaker.Models
         public int? InvoiceId { get; set; }
         public Invoice Invoice { get; set; }
 
+        public string Description { get { return $"{StartedOn.ToString("MM/dd/yyyy")} - {WorkTypeName}"; } }
+
 
         public void Finished(DateTimeOffset endedOn)
         {
